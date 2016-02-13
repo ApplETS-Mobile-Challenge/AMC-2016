@@ -21,8 +21,7 @@
         android:id="@+id/NomUtilisateur"
         android:textColor="@android:color/black"
         android:textSize="28sp"
-        android:hint="Nom d'utilisateur"
-        android:shadowColor="#000000ff" />
+        android:hint="Nom d'utilisateur" />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

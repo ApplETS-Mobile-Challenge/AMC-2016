@@ -3,33 +3,37 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_connect"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:title="Connexion"/>
+
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_disconnect"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:title="déconnexion"
+            android:visible="false"/>
+
+        <item
+            android:id="@+id/nav_info"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Mes infos"
+            android:visible="false"/>
     </group>
 
-    <item android:title="Communicate">
+    <item
+        android:title="Annonces"
+        android:visible="false"
+        android:id="@+id/nav_Annonces">
         <menu>
+
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:id="@+id/nav_MAnnonces"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="Voir mes annonces"/>
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:id="@+id/nav_LAnnonces"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="Voir les annonces"/>
         </menu>
     </item>
 
