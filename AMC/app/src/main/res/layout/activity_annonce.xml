@@ -11,7 +11,8 @@
         android:text="Créer une annonce"
         android:id="@+id/textView2"
         android:layout_gravity="center_horizontal"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        android:layout_marginTop="70dp" />
 
     <EditText
         android:layout_width="match_parent"
@@ -50,7 +51,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="date"
+        android:inputType="textPostalAddress"
         android:ems="10"
         android:id="@+id/editText5"
         android:layout_gravity="center_horizontal"
@@ -59,28 +60,51 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="date"
+        android:inputType="textPostalAddress"
         android:ems="10"
         android:id="@+id/editText6"
         android:layout_gravity="center_horizontal"
         android:hint="Date de fin" />
-
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPostalAddress"
         android:ems="10"
         android:id="@+id/editText7"
-        android:layout_gravity="center_horizontal"
-        android:hint="Adresse" />
+        android:hint="Numéro de rue" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPostalAddress"
+        android:ems="10"
+        android:id="@+id/editText8"
+        android:hint="Nom de la rue" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPostalAddress"
+        android:ems="10"
+        android:id="@+id/editText9"
+        android:hint="Ville" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPostalAddress"
+        android:ems="10"
+        android:id="@+id/editText10"
+        android:hint="Code postal" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:text="Confirmer"
         android:id="@+id/button"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0.08"
-        android:layout_marginTop="40dp" />
+        android:layout_marginTop="20dp"
+        android:onClick="btnCreerAnnonce" />
 
 </LinearLayout>

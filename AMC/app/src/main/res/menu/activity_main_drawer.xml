@@ -10,19 +10,16 @@
         <item
             android:id="@+id/nav_disconnect"
             android:icon="@drawable/ic_menu_manage"
-            android:title="déconnexion"
-            android:visible="false"/>
+            android:title="Déconnexion" />
 
         <item
             android:id="@+id/nav_info"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Mes infos"
-            android:visible="false"/>
+            android:title="Mes informations" />
     </group>
 
     <item
         android:title="Annonces"
-        android:visible="false"
         android:id="@+id/nav_Annonces">
         <menu>
 
@@ -34,6 +31,10 @@
                 android:id="@+id/nav_LAnnonces"
                 android:icon="@drawable/ic_menu_slideshow"
                 android:title="Voir les annonces"/>
+            <item
+                android:id="@+id/nav_CreerAnnonce"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="Créer une annonce"/>
         </menu>
     </item>
 

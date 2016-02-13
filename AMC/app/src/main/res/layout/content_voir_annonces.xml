@@ -12,6 +12,12 @@
     tools:context="com.example.amc.amc.VoirAnnoncesActivity"
     tools:showIn="@layout/activity_voir_annonces">
 
+    <LinearLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="0px"
+        android:layout_height="0px"/>
+
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,7 +26,8 @@
         android:id="@+id/editText"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:hint="Inscrivez une adresse ici..." />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -41,5 +48,7 @@
         android:layout_below="@+id/btnRechercher"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+
 
 </RelativeLayout>

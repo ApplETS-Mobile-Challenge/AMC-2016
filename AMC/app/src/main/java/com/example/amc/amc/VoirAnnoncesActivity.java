@@ -1,6 +1,9 @@
 package com.example.amc.amc;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -9,17 +12,27 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 
 import java.io.IOException;
+import java.security.KeyStore;
 import java.util.ArrayList;
+import java.util.List;
 
-public class VoirAnnoncesActivity extends AppCompatActivity implements LocationListener {
+public class VoirAnnoncesActivity extends AppCompatActivity implements LocationListener, NavigationView.OnNavigationItemSelectedListener {
 
     private double Latitude;
     private double Longitude;
@@ -46,20 +59,42 @@ public class VoirAnnoncesActivity extends AppCompatActivity implements LocationL
     LocationManager LocationManager;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_voir_annonces);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Button btn = (Button) findViewById(R.id.btnRechercher);
+
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.bringToFront();
+        btn.bringToFront();
+        if (LoginActivity.user != null)
+        {
+            navigationView.getMenu().getItem(0).setVisible(false);
+        }
+        else
+        {
+            navigationView.getMenu().getItem(1).setVisible(false);
+            navigationView.getMenu().getItem(1).setVisible(false);
+            navigationView.getMenu().getItem(2).setVisible(false);
+            navigationView.getMenu().getItem(3).setVisible(false);
+        }
+    }
+
+    public void AfficherLesAnnonces(ArrayList<Annonce> annonce) {
+        ListView listview = (ListView) findViewById(R.id.listView);
+        ArrayList<String> myStringArray1 = new ArrayList<String>();
+
+        myStringArray1.add("Code | Titre | Ville |");
+        for (int i = 0; i < annonce.size(); i++)
+            myStringArray1.add(String.valueOf(annonce.get(i).ID) + " | " + annonce.get(i).Titre + " | " + annonce.get(i).Ville + " | Postuler");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, myStringArray1);
+        listview.setAdapter(adapter);
     }
 
     @Override
@@ -75,7 +110,7 @@ public class VoirAnnoncesActivity extends AppCompatActivity implements LocationL
                 //                                          int[] grantResults)
                 // to handle the case where the user grants the permission. See the documentation
                 // for ActivityCompat#requestPermissions for more details.
-                return;
+
             } else
                 LocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, this);
         }
@@ -99,7 +134,7 @@ public class VoirAnnoncesActivity extends AppCompatActivity implements LocationL
             LocationManager.removeUpdates(this);
     }
 
-    public void btnRechercherOnClick(View v)  {
+    public void btnRechercherOnClick(View v) {
         LocationManager = (LocationManager) this.getSystemService(this.LOCATION_SERVICE);
 
         // Obtenir le status du gps
@@ -160,14 +195,13 @@ public class VoirAnnoncesActivity extends AppCompatActivity implements LocationL
             }
         }
 
-        try
-        {
+        try {
             coder = new Geocoder(this);
             ArrayList<Address> t = new ArrayList<Address>();
 
             for (int i = 0; i < MainActivity.LstAnnonces.size(); i++) {
                 t.add(coder.getFromLocationName(MainActivity.LstAnnonces.get(i).NoCivique + " " + MainActivity.LstAnnonces.get(i).NomRue + ", " + MainActivity.LstAnnonces.get(i).Ville + ", " +
-                                               MainActivity.LstAnnonces.get(i).CodePostal, 1).get(0));
+                        MainActivity.LstAnnonces.get(i).CodePostal, 1).get(0));
             }
 
             LstTrie = new int[t.size()];
@@ -176,6 +210,27 @@ public class VoirAnnoncesActivity extends AppCompatActivity implements LocationL
             }
 
             String test = "";
+            EditText texteRecherche = (EditText) findViewById(R.id.editText);
+
+            if (texteRecherche.getText().toString() != null && texteRecherche.getText().toString() != "") {
+
+                List<Address> adresse = coder.getFromLocationName(texteRecherche.getText().toString(), 1);
+                if (adresse != null && adresse.size() > 0) {
+                    location.setLatitude(adresse.get(0).getLatitude());
+                    location.setLongitude(adresse.get(0).getLongitude());
+                } else {
+                    final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                    alertDialog.setTitle("Erreur");
+                    alertDialog.setMessage("L'application n'a pas pu trouvé une adresse correspondante à celle que vous avez entré.");
+                    alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            alertDialog.cancel();
+                        }
+                    });
+                    alertDialog.show();
+
+                }
+            }
 
             for (int i = 0; i < MainActivity.LstAnnonces.size() - 1; i++) {
                 for (int j = 0; j < MainActivity.LstAnnonces.size(); j++) {
@@ -199,14 +254,16 @@ public class VoirAnnoncesActivity extends AppCompatActivity implements LocationL
                 test = test + t.get(LstTrie[k]).getAddressLine(0) + ';';
             }
 
-            Toast.makeText(this, test, Toast.LENGTH_SHORT).show();
-        }
-        catch (IOException e)
-        {
+            ArrayList<Annonce> lst = new ArrayList<Annonce>();
+
+            for (int a = 0; a < MainActivity.LstAnnonces.size(); a++)
+                lst.add(MainActivity.LstAnnonces.get(LstTrie[a]));
+
+            AfficherLesAnnonces(lst);
+
+        } catch (IOException e) {
 
         }
-
-
 
     }
 
@@ -231,5 +288,38 @@ public class VoirAnnoncesActivity extends AppCompatActivity implements LocationL
     @Override
     public void onProviderDisabled(String provider) {
 
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_connect) {
+            Intent startbuttonintent = new Intent(this, LoginActivity.class);
+            startActivity(startbuttonintent);
+
+        } else if (id == R.id.nav_disconnect) {
+            LoginActivity.user = null;
+            Intent startbuttonintent = new Intent(this, VoirAnnoncesActivity.class);
+            startActivity(startbuttonintent);
+
+        } else if (id == R.id.nav_info) {
+
+        } else if (id == R.id.nav_MAnnonces) {
+
+        } else if (id == R.id.nav_LAnnonces) {
+            Intent startbuttonintent = new Intent(this, VoirAnnoncesActivity.class);
+            startActivity(startbuttonintent);
+        }
+        else if (id == R.id.nav_CreerAnnonce) {
+            Intent startbuttonintent = new Intent(this, CreerAnnonceActivity.class);
+            startActivity(startbuttonintent);
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.amc.amc;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -14,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -25,51 +25,34 @@ public class MainActivity extends AppCompatActivity
     public static ArrayList<Annonce> LstAnnonces = new ArrayList<Annonce>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-       /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        LstComptes.add(new Compte(1, 12, "Samuel", "Nadeau", "enfantduperenoel@hotmail.com", "qwerty", "20", "Richard", "J0K1K0", "Lourdes-de-Joliette"));
+        LstComptes.add(new Compte(1, 12, "Samuel", "Nadeau", "1", "2", "20", "Richard", "J0K1K0", "Lourdes-de-Joliette"));
         LstComptes.add(new Compte(2, 18, "Jonathan", "Clavet-Grenier", "jesuismajeur@hotmail.com", "123456", "1111", "Rang Montcalm", "J0K2XO", "St-Liguori"));
         LstComptes.add(new Compte(3, 20, "Madeline", "Poulin", "ets@hotmail.com", "654321", "1111", "Rue Notre-Dame Ouest", "H3C6M8", "Montréal"));
 
-        LstAnnonces.add(new Annonce(1, "Évènement AMC 2016", "Nous avons besoin de bénévolats pour l'évènement AMC 2016. Ces bénévolats devront effectuer des tâches simples telles que prendre les manteaux des personnes, accueillir les gens, etc. Nourriture et hôtel fournit gratuitement. Appelez pour avoir plus d'informations. 18 ans et plus requis.",
+        LstAnnonces.add(new Annonce(1, "Évènement AMC 2016", "Nous avons besoin de bénévolats pour l'évènement AMC 2016.\n Ces bénévolats devront effectuer des tâches simples telles que prendre les manteaux des personnes, accueillir les gens, etc. Nourriture et hôtel fournit gratuitement. Appelez pour avoir plus d'informations. 18 ans et plus requis.",
                 "18 février 2016", "18h00", "19 février 2016", "16h00", "1111", "Rue Notre-Dame Ouest", "H3C6M8", "Montréal", LstComptes.get(2)));
-        LstAnnonces.add(new Annonce(2, "Tracteur à gazon", "Nous cherchons quelqu'un en mesure de couper le gazon. Mon grand-père perd de plus en plus son autonomie et n'est malheureusement plus apte à le faire par lui-même.",
+        LstAnnonces.add(new Annonce(2, "Tracteur à gazon", "Nous cherchons quelqu'un en mesure de couper le gazon.\n Mon grand-père perd de plus en plus son autonomie et n'est malheureusement plus apte à le faire par lui-même.",
                 "Indéfini", "Indéfini", "Indéfini", "Indéfini", "20", "Richard", "J0K1K0", "Lourdes-de-Joliette", LstComptes.get(1)));
         LstAnnonces.get(1).Demandeurs.add(LstComptes.get(0));
+
+        Intent startbuttonintent = new Intent(this, VoirAnnoncesActivity.class);
+        startActivity(startbuttonintent);
     }
 
-    public static Compte RetournerCompte(String _Courriel, String _MotDePasse)
+    public static Compte RetournerCompte(String _Courriel, String _MotDePasse, Context _c)
     {
         int IndCompte;
 
         IndCompte = 0;
 
-        while (IndCompte < LstComptes.size() && LstComptes.get(IndCompte).Courriel != _Courriel)
+
+        while (IndCompte < LstComptes.size() && !LstComptes.get(IndCompte).Courriel.equals(_Courriel))
             IndCompte++;
 
-        if (IndCompte < LstComptes.size() && LstComptes.get(IndCompte).MotDePasse == _MotDePasse)
+        if (IndCompte < LstComptes.size() && LstComptes.get(IndCompte).MotDePasse.equals(_MotDePasse))
             return LstComptes.get(IndCompte);
 
         return null;
@@ -149,20 +132,22 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_connect) {
             Intent startbuttonintent = new Intent(this, LoginActivity.class);
             startActivity(startbuttonintent);
-
         } else if (id == R.id.nav_disconnect) {
-
+            LoginActivity.user = null;
+            Intent startbuttonintent = new Intent(this, VoirAnnoncesActivity.class);
+            startActivity(startbuttonintent);
 
         } else if (id == R.id.nav_info) {
 
         } else if (id == R.id.nav_MAnnonces) {
 
         } else if (id == R.id.nav_LAnnonces) {
-
+            Intent startbuttonintent = new Intent(this, VoirAnnoncesActivity.class);
+            startActivity(startbuttonintent);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+       // DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+       // drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 }
