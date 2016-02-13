@@ -16,20 +16,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
-public class MainActivity extends AppCompatActivity
+public class LoginActivity extends MainActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-    public static ArrayList<Compte> LstComptes = new ArrayList<Compte>();
-    public static ArrayList<Annonce> LstAnnonces = new ArrayList<Annonce>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+       // getSupportActionBar();
+
+       /* Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setTitle(LoginActivity.this.getResources().getString(R.string.app_name));
+        }*/
 
        /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -48,64 +50,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        LstComptes.add(new Compte(1, 12, "Samuel", "Nadeau", "enfantduperenoel@hotmail.com", "qwerty", "20", "Richard", "J0K1K0", "Lourdes-de-Joliette"));
-        LstComptes.add(new Compte(2, 18, "Jonathan", "Clavet-Grenier", "jesuismajeur@hotmail.com", "123456", "1111", "Rang Montcalm", "J0K2XO", "St-Liguori"));
-        LstComptes.add(new Compte(3, 20, "Madeline", "Poulin", "ets@hotmail.com", "654321", "1111", "Rue Notre-Dame Ouest", "H3C6M8", "Montréal"));
-
-        LstAnnonces.add(new Annonce(1, "Évènement AMC 2016", "Nous avons besoin de bénévolats pour l'évènement AMC 2016. Ces bénévolats devront effectuer des tâches simples telles que prendre les manteaux des personnes, accueillir les gens, etc. Nourriture et hôtel fournit gratuitement. Appelez pour avoir plus d'informations. 18 ans et plus requis.",
-                "18 février 2016", "18h00", "19 février 2016", "16h00", "1111", "Rue Notre-Dame Ouest", "H3C6M8", "Montréal", LstComptes.get(2)));
-        LstAnnonces.add(new Annonce(2, "Tracteur à gazon", "Nous cherchons quelqu'un en mesure de couper le gazon. Mon grand-père perd de plus en plus son autonomie et n'est malheureusement plus apte à le faire par lui-même.",
-                "Indéfini", "Indéfini", "Indéfini", "Indéfini", "20", "Richard", "J0K1K0", "Lourdes-de-Joliette", LstComptes.get(1)));
-        LstAnnonces.get(1).Demandeurs.add(LstComptes.get(0));
-    }
-
-    public static Compte RetournerCompte(String _Courriel, String _MotDePasse)
-    {
-        int IndCompte;
-
-        IndCompte = 0;
-
-        while (IndCompte < LstComptes.size() && LstComptes.get(IndCompte).Courriel != _Courriel)
-            IndCompte++;
-
-        if (IndCompte < LstComptes.size() && LstComptes.get(IndCompte).MotDePasse == _MotDePasse)
-            return LstComptes.get(IndCompte);
-
-        return null;
-    }
-
-    public static Annonce RetournerAnnonce(int _ID)
-    {
-        int IndAnnonce;
-
-        IndAnnonce = 0;
-
-        while (IndAnnonce < LstAnnonces.size() && LstAnnonces.get(IndAnnonce).ID != _ID)
-            IndAnnonce++;
-
-        if (IndAnnonce < LstAnnonces.size())
-            return LstAnnonces.get(IndAnnonce);
-
-        return null;
-    }
-
-    public static ArrayList<Annonce> RetournerToutesLesAnnoncesDunCompte(Compte _Compte)
-    {
-        int IndAnnonce;
-
-        ArrayList<Annonce> LstAnnoncesDuCompte = new ArrayList<Annonce>();
-
-        IndAnnonce = 0;
-
-        while (IndAnnonce < LstAnnonces.size())
-        {
-            if (LstAnnonces.get(IndAnnonce).Createur.ID == _Compte.ID)
-                LstAnnoncesDuCompte.add(LstAnnonces.get(IndAnnonce));
-            IndAnnonce++;
-        }
-
-        return LstAnnoncesDuCompte;
     }
 
     @Override
@@ -147,8 +91,6 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_connect) {
-            Intent startbuttonintent = new Intent(this, LoginActivity.class);
-            startActivity(startbuttonintent);
 
         } else if (id == R.id.nav_disconnect) {
 
